@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark w-100">
+    <div class="col-3">
+        <span class="text-light" >
+            <b id="email_admin" class="font-weight-bold"></b> with roles:
+          <span id="user-admin-roles">
+
+            </span>
+        </span>
+    </div>
+    <div class="col-7"></div>
+    <div class="col-2 text-right">
+        <a href="/logout" class="text-light text-decoration-none">Logout</a>
+    </div>
+
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 pt-4 pl-0 pr-0" style="height: 700px">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link" id="v-pills-home-tab" data-toggle="" href="/admin/users" role="tab">Admin</a>
+                <a class="nav-link active" id="v-pills-profile-tab" data-toggle="" href="/admin/user-admin" role="tab">User</a>
+            </div>
+        </div>
+        <div class="col-10 pt-3 pl-5 bg-light">
+            <h2 class="text-left font-weight-bold m-2">User information-page</h2>
+            <div class="container p-0 bg-white border">
+                <div class="p-2 mb-4 bg-light text-dark border">
+                    <h5>About user</h5>
+                </div>
+                <div class="col">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Age</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody id="user-admin">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    fetch('/admin/getUser')
+    .then(response=> {
+        response.json().then(data => {
+            let user = data;
+            let roles = user.roles;
+            let h_role = '';
+            for (let i = 0; i < roles.length; i++) {
+                let role = roles[i].role;
+                h_role = h_role + '<span>' + role.substring(5, role.length) +
+                    ' </span>';
+            }
+            let html = '<tr>'
+                + '<td>' + user.id + '</td>'
+                + '<td>' + user.username + '</td>'
+                + '<td>' + user.name + '</td>'
+                + '<td>' + user.surname + '</td>'
+                + '<td>' + user.age + '</td>'
+                + '<td>' + h_role + '</td>'
+                + '</tr>';
+            document.getElementById('email_admin').innerHTML = user.username;
+            document.getElementById('user-admin-roles').innerHTML = h_role;
+            document.getElementById('user-admin').innerHTML = html;
+        })
+    })
+</script>
+</body>
+</html>
